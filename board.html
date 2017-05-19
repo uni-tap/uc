@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Class for</title>
+    <meta property="og:image" content="img/whale_64.png" />
+    <link rel="stylesheet" href="fhcss.css">
+    <style>
+    top{
+        z-index:3;
+        position:fixed;
+        top:0px;
+        left:0px;
+        width:100%;
+        height:8%;
+        background-color:whitesmoke;
+        
+        }
+     side{
+         position:fixed;
+         z-index:1;
+         left:0px;
+         top:8%;
+         height:92%;
+         width:15%;
+         background-color:whitesmoke;
+         } 
+/* Style the list */
+ul.tab {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+/* Float the list items side by side */
+ul.tab li {float: left;}
+
+/* Style the links inside the list items */
+ul.tab li a {
+    display: inline-block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: 0.3s;
+    font-size: 17px;
+    width:90px;
+}
+
+/* Change background color of links on hover */
+ul.tab li a:hover {background-color: #ddd;}
+
+/* Create an active/current tablink class */
+ul.tab li a:focus, .active {background-color: #ccc;}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    border: 1px solid #ccc;
+    border-top: none;
+    height:100%;
+    width:100%;
+    overflow:auto;
+    background-color:white;
+    position:absolute;
+    top:100px;
+    left:0px;
+}  
+.tlbxbtnleft{
+    position:initial;
+    top:1px;
+    left:1px;
+    height:100px;
+    width:100%;
+    border:1px solid whitesmoke;
+    background-color:transparent;
+    }
+.tlbxbtnright{
+    position:initial;
+    top:1px;
+    right:1px;
+    height:100px;
+    width:100%;
+    border:1px solid whitesmoke;
+    background-color:transparent;
+    }
+.left{
+    height:100%;
+    width:50%;
+    position:absolute;
+    top:0px;
+    left:0px;
+    }    
+.right{
+    height:100%;
+    width:50%;
+    position:absolute;
+    top:0px;
+    right:0px;
+    } 
+.board{
+    position:absolute;
+    top:8%;
+    left:15%;
+    width:85%;
+    height:87%;
+    oveflow:auto;
+    background-color:whitesmoke;
+    }
+.Mycanvas{
+    position:absolute;
+    top:0px;
+    left:0px;
+    width:100%;
+    height:100%;
+    background-color:white;
+    }
+.toppane{
+    height:50px;
+    width:20%;
+    position:fixed;
+    top:7.8%;
+    z-index:1;
+    left:40%;
+    border-bottom-left-radius:10px;
+    border-bottom-right-radius:10px;
+    opacity:0.7;
+    background-color:black;
+    } 
+pane .button{
+    background-color:transparent;
+    border:none;
+    color:white;
+    height:100%;
+    border-bottom-left-radius:10px;
+    }
+pane button:focus{
+    outline:none;
+    }  
+pane .button2{
+    background-color:transparent;
+    border:none;
+    color:white;
+    height:100%;
+    border-bottom-left-radius:10px;
+    position:absolute;
+    right:0px;
+    top:0px;
+    }
+input[type=email], input[type=number], input[type=password], input[type=tel], input[type=text], input[type=url] {
+    -webkit-appearance: none;
+    appearance: none;
+    display: inline-block;
+    height: 29px;
+    margin: 0;
+    padding: 0 8px;
+    background: #fff;
+    border: 1px solid #d9d9d9;
+    border-top: 1px solid #c0c0c0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-border-radius: 1px;
+    -moz-border-radius: 1px;
+    border-radius: 1px;
+}    
+input[type=email]:focus, input[type=number]:focus, input[type=password]:focus, input[type=tel]:focus, input[type=text]:focus, input[type=url]:focus {
+    outline: none;
+    border: 1px solid #4d90fe;
+    -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+    -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+}
+    </style>
+  </head>
+  <body onload="videochat()">
+   <top class="fh-card ">
+   <div id="statusField"></div>
+           <button class="tlsbtn  tlbtn"id="NewPage" onclick="myButtonClicked ('NewPage')">NewPage</button> 
+  	   <button class="tlsbtn  tlbtn"id="Leftbt" onclick="myButtonClicked ('LeftBt')">Left</button> 
+       <input type="text" id = "textbox" name="PageNo" onchange = "myButtonClicked ('TextBoxValue')">
+       <button class="tlsbtn  tlbtn"id="Rightbt" onclick="myButtonClicked ('RightBt')">Right</button>   
+             Size:
+      <select id="thickness" class="fixed">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="20">20</option>
+      </select>
+  
+      Color:
+      <select id="color">
+        <option value="#FFFFFF">#FFFFFF</option>
+        <option value="#AAAAAA">#AAAAAA</option>
+        <option value="#999999">#999999</option>
+        <option value="#000000">#000000</option>
+        <option value="#9BA16C">#9BA16C</option>
+        <option value="#CC8F2B">#CC8F2B</option>
+        <option value="#63631D">#63631D</option>
+        <option value="#00FF00">#00FF00</option>
+      </select>
+	  Tool:
+       <select id="tool">
+	   <option value="pen">Pen</option>
+	   <option value="newpage">NewPage</option>
+	   <option value="line">Line</option>
+	   <option value="rect">Rectangle</option>            
+       <option value="circ">Circle</option>
+		<option value="triangle">Triangle</option>
+		<option value="righttriangle">RightTriangle</option>
+		<option value="ellipse">Ellipse</option>
+		<option value="frect">FilledRectangle</option>
+		<option value="fcirc">FilledCircle</option>
+		<option value="ftriangle">FilledTriangle</option>
+		<option value="frighttriangle">FilledRightTriangle</option>
+		<option value="fellipse">FilledEllipse</option>
+      </select>
+      <input type="color" id="myPenColor" value="#00ff0080" onclick="myButtonClicked('myPenColor')" />  
+<input type="color" id="myBoardColor" value="#ffff00" onclick="myButtonClicked('myBoardColor')" /> 
+   <div id="container" style="position:absolute;top:99%;z-index:4;border-top:none;height:200px;width:300px;right:0px;background-color:white;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;">
+       <video autoplay="true" id="videoElement" style="width:90%;height:90%;background-color:black;position:absolute;top:5%;left:5%;"></video>
+   </div>
+   </top>
+   <side class="fh-card">
+   <div style="position:absolute;top:50px;background-color:whitesmoke;width:99.89%;height:50px;text-align:center;">
+   <p id="tabname">Toolbox</p>
+   </div>
+   <ul class="tab">
+  <li><a  class="tablinks" onclick="openCity(event, 'Pens')">Pens</a></li>
+  <li><a  class="tablinks" onclick="openCity(event, 'Shapes')">Shapes</a></li>
+  <li><a  class="tablinks" onclick="openCity(event, 'Colors')">Colors</a></li>
+</ul>
+
+<div id="Pens"  class="tabcontent">
+<div class="left">
+<button class="tlbxbtnleft"></button>
+<button class="tlbxbtnleft"></button>
+<button class="tlbxbtnleft"></button>
+</div>
+<div class="right">
+<button class="tlbxbtnright"></button>
+<button class="tlbxbtnright"></button>
+<button class="tlbxbtnright"></button>
+</div>
+</div>
+<div id="Shapes" class="tabcontent">
+<div class="left">
+<button style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Simple_triangle.svg/220px-Simple_triangle.svg.png');text-align:center;" class="tlbxbtnleft"></button>
+<button class="tlbxbtnleft"></button>
+<button class="tlbxbtnleft"></button>
+</div>
+<div class="right">
+<button class="tlbxbtnright"></button>
+<button class="tlbxbtnright"></button>
+<button class="tlbxbtnright"></button>
+</div>
+</div>
+
+<div id="Colors" class="tabcontent">
+<div class="left">
+<button class="tlbxbtnleft"></button>
+<button class="tlbxbtnleft"></button>
+<button class="tlbxbtnleft"></button>
+</div>
+<div class="right">
+<button class="tlbxbtnright"></button>
+<button class="tlbxbtnright"></button>
+<button class="tlbxbtnright"></button>
+</div>
+</div>
+   </side>
+<div class="board" id="main">
+<canvas id="canvas1" ></canvas>
+<canvas id="MyTempcanvas" style="background-color:transparent;height:100%;width:100%;"></canvas>
+</div>   
+<pane class="fh-card toppane fh-card-2">
+<button class="button"><</button> 
+<button class="button2">></button> 
+<button style="position:absolute;top:0px;height:100%;border:none;background-color:transparent;color:white;font-size:20px;margin-left:5px;margin-right:5px;">+</button> 
+</pane>
+<div class="fh-card-2" style="position:absolute;z-index:3;right:0px;bottom:0px;width:300px;height:400px;background-color:white;border-top-left-radius:10px;border-top-right-radius:10px;">
+<ul id="userList"></ul>
+<div id="chat">
+      <div id="chatPane"></div>
+      <input style="position:absolute;bottom:5px;left:5px;width:80%;padding:5px;" type="text" id="chatOut"/>
+      <input type="submit" id="chatSend" style="position:absolute;bottom:5px;width:15%;right:5px;border:none;height:30px;padding:5px;" value="Send"/>
+    </div>
+</div>
+  </body>
+<script type="text/javascript" src="http://cdn.unioncloud.io/Orbiter_latest.js"></script>  
+<script type="text/javascript" src="ui.js"></script>
+<script type="text/javascript" src="orbiterboot.js"></script>
+<script type="text/javascript" src="unionchat.js"></script>
+<script type="text/javascript" src="userlist.js"></script>
+<script type="text/javascript" src="uniondraw.js"></script>
+  <script>
+  function openCity(evt, pallate) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+    let tabname = document.getElementById("tabname");
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tabname.innerHTML = pallate;
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace("active", "");
+        
+    }
+
+    // Show the current tab, and add an "active" class to the link that opened the tab
+    document.getElementById(pallate).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+var video = document.querySelector("#videoElement");
+ function videochat() {
+navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+ 
+if (navigator.getUserMedia) {       
+    navigator.getUserMedia({video: true}, handleVideo, videoError);
+}
+ 
+function handleVideo(stream) {
+    video.src = window.URL.createObjectURL(stream);
+}
+ 
+function videoError(e) {
+    // do something
+}
+setTimeout(1,openCity(event, 'Pens'));
+ }
+  </script>
+</html>

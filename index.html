@@ -1,0 +1,811 @@
+﻿<!DOCTYPE html>
+
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Union HTML5 Collaborator</title>
+
+<!--Prevents iPhone, iPad, and touch devices from zooming-->
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+<link href="/fhcss.css" rel="stylesheet">
+<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="css/styles.css" rel="stylesheet" type="text/css">
+<!--
+Load Canvas support for IE8. ExplorerCanvas courtesy Google.
+See: http://code.google.com/p/explorercanvas/
+-->
+<!--[if lt IE 9]>
+<script src="excanvas.js"></script>
+<![endif]-->
+
+<!--CSS-->
+<link href="style.css" rel="stylesheet" type="text/css">
+<style>
+.side{
+height:35px;
+width:100%;
+margin-top:5px;
+}
+ right{
+     position: absolute;
+     right:0px;
+     }
+select{
+  padding:10px;
+  background-color:whitesmoke;
+  border:none;
+}
+#CanvasContainer{
+  width:85%;
+  height:95%;
+  border:none;
+  position:absolute;
+  left:50px;
+  top:70px;
+}
+.wrttools{
+  width:15%;
+  height:20%;
+  z-index:1;
+  position:absolute;
+  top:240px;
+  left:55px;
+  background-color:whitesmoke;
+  display:none;
+}
+.toolsbtn{
+  position:relative;
+  border:none;
+  height:100%;
+  width:10%;
+  top:0px;
+}
+      </style>
+      <style>
+          .type-c{
+              width:30%;
+              height:25%;
+              border-radius:20px;
+              position:absolute;
+              top:30%;
+              left:30%;
+              z-index:2;
+              border:none;
+              display:none;
+          }
+          .inner{
+              position:absolute;
+              right:5%;
+              top:-25%;
+              height:150%;
+              width:50%;
+              background-color:white;
+              border-radius:10px;
+              border:none;
+          }
+          .clr-box{
+              width:12%;
+              height:25%;
+              background-color:whitesmoke;
+              position:absolute;
+              top:25px;
+              right:0px;
+              z-index:2;
+              border:none;
+              padding:10px;
+          }
+          .clr-btn{
+              height:30px;
+              width:30px;
+              border:none;
+              position:relative;
+              border-radius:100px;
+          }
+          .sab{
+            height:100px;
+            width:500px;
+            background-color:whitesmoke;
+            z-index:4012;
+            position:absolute;
+            top:45%;
+            left:35%;
+            border:none;
+
+          }
+          .note_box{
+            position:absolute;
+            padding:15px 10px 10px 33px;
+            bottom:50px;
+            left:50px;
+            height:50px;
+            width:200px;
+            background-color:white;
+            box-shadow: 0 6px 18px 0 rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.08);
+            opacity:0.3;
+            border:none;
+          }
+          .note_box:hover{
+            opacity:1;
+            border:none;
+          }
+          #embedded-human{
+            position:absolute;
+            top:0px;
+            height:100%;
+            width:90%;
+            left:0px;
+            z-index:2012;
+          }
+          .tlsbtn {
+              height:100%;
+              width:10%;
+              border:none;
+              background-color:transparent;
+              text-align:center;
+              position: relative;
+              top: 0px;
+}
+          .pulse{
+              font-size:10px;
+          }
+          .calc{
+              height:330px;
+              width:330px;
+              border:none;
+              border-radius:5px;
+              position:absolute;
+              top:335px;
+              left:3%;
+          }
+      </style>
+</head>
+
+<body>
+  <div style="display:none;" onclick="sab.style.display = 'none';" class="ut-card ut-card-2 sab ut-animate-opacity" id="sab">
+     <img src="icons/brush.png" style="position:absolute;left:20px;top:20px;width:10%;height:50%;">
+     <h3 style="position:absolute;left:25%;top:20px;" ><i>Draw anything in the white area.</i></h3>
+   </div>
+<img id="MyPage" src="" style="display:none;">
+ <!--<body onload="videochat()">-->
+<!--Contains the system status-->
+<div id="statusField"></div>
+<div id="dtText">
+
+<right><time id="time"></time></right>
+</div>
+
+<!--<div id="downloadLink"><a href="UnionCollaborator.zip">Download source...</a></div></div>
+<span id="dtText"></span>-->
+
+   <div id="controls" class="ut-card-2 draggable"><div style="display:none;">
+      Size:
+      <select id="thickness" class="fixed">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+        <option value="50">50</option>
+      </select>
+
+      Color:
+      <select id="color">
+        <option value="#FFFFFF">#FFFFFF</option>
+        <option value="#AAAAAA">#AAAAAA</option>
+        <option value="#999999">#999999</option>
+        <option value="#000000">#000000</option>
+        <option value="#9BA16C">#9BA16C</option>
+        <option value="#CC8F2B">#CC8F2B</option>
+        <option value="#63631D">#63631D</option>
+        <option value="#00FF00">#00FF00</option>
+      </select>
+       <select id="tool">
+	   <option value="pen">Pen</option>
+	   <option value="newpage">NewPage</option>
+	   <option value="line">Line</option>
+	   <option value="rect">Rectangle</option>
+       <option value="circ">Circle</option>
+		<option value="triangle">Triangle</option>
+		<option value="righttriangle">RightTriangle</option>
+		<option value="ellipse">Ellipse</option>
+		<option value="frect">FilledRectangle</option>
+		<option value="fcirc">FilledCircle</option>
+		<option value="ftriangle">FilledTriangle</option>
+		<option value="frighttriangle">FilledRightTriangle</option>
+		<option value="fellipse">FilledEllipse</option>
+      </select>
+  </div>
+<button class="tlsbtn tlbtn"id="Pen"  style="background-image:url('icons/pnl.png');background-repeat: no-repeat;"></button>
+<button class="tlsbtn tlbtn"id="Eraser" style="background-image:url('icons/esr.png');background-repeat: no-repeat;"></button>
+<button class="tlsbtn tlbtn"id="Text"style="background-image:url('icons/txt.png');background-repeat: no-repeat;" ></button>
+<!--<button class="tlsbtn tlbtn" style="background-image:url('sbrush.png')"></button>-->
+<button   class="tlsbtn  tlbtn"id="Line"style="background-image:url('icons/line.png');background-repeat: no-repeat;"></button>
+<button   class="tlsbtn  tlbtn"id="Rectangle"style="background-image:url('icons/sqr.png');background-repeat: no-repeat;"></button>
+<button  class="tlsbtn  tlbtn"id="Circle" style="background-image:url('icons/circ.png');background-repeat: no-repeat;"></button>
+<button class="tlsbtn  tlbtn"id="RightTriangle" style="background-image:url('icons/right-tri.png');background-repeat: no-repeat;"></button>
+<button class="tlsbtn  tlbtn"id="Triangle" style="background-image:url('icons/tri.png');background-repeat: no-repeat;"></button>
+<button class="tlsbtn  tlbtn"id="cp" style="background-image:url('icons/cp.png');background-repeat: no-repeat;" onclick="document.getElementById('clrbox').style.display = 'block';"></button>
+ <!--filled  Graphics Tools  -->
+       <div style="display:none;">
+           <button   class="tlsbtn  tlbtn"id="Trapezium">Trapezium</button>
+           <button  class="tlsbtn  tlbtn"id="Ellipse" style="background-image:url('BlueEllipseIcon.png')"></button>
+<button   class="tlsbtn  tlbtn"id="FilledRectangle" style="background-image:url('FGreenRectangleIcon.png')"></button>
+<button  class="tlsbtn  tlbtn"id="FilledCircle"style="background-image:url('FGreenCircleIcon.png')"></button>
+<button  class="tlsbtn  tlbtn"id="FilledEllipse"style="background-image:url('FGreenEllipseIcon.png')"></button>
+<button class="tlsbtn  tlbtn"id="FilledRightTriangle" style="background-image:url('FBlueRightTriangleIcon.png')"></button>
+<button class="tlsbtn  tlbtn"id="FilledTriangle" style="background-image:url('FBlueTriangleIcon.png')"></button>
+</div>
+    </div>
+<div id="controls1" class="ut-animate-left ut-card-2 draggable">
+    <input type="file" accesskey="f" id="imageLoader" name="imageLoader"/>
+ <button class="side" accesskey="n" style="border:none;box-shadow:none;" id="NewPage">+</button>
+<button class="side" accesskey="<" style="border:none;box-shadow:none;" id="Leftbt">‹</button>
+<p id="textbox" name="PageNo" ></p>
+<button class="side" accesskey=">" style="border:none;box-shadow:none;" id="Rightbt">›</button>
+<button class="side" accesskey="g" style="border:none;box-shadow:none;background-image:url('icons/graph.png');background-repeat:no-repeat;" id="Graph"></button>
+<button class="side" accesskey="clr" style="border:none;box-shadow:none;background-image:url('icons/del.png');background-repeat:no-repeat;" id="clr" onclick="clearcanvas1()"></button>
+<button class="side" accesskey="calc" style="border:none;box-shadow:none;"onclick="document.getElementById('calc').style.display = 'block';">calc</button>
+ </div>
+  <div id="CanvasContainer"style.display = "none" >
+
+   </div>
+ <div id="MyBoard" >
+       <!--The canvas where drawings will be displayed-->
+        <canvas id="canvas1"class="Mycanvas"></canvas>
+        <canvas id="MyTempcanvas"class="MyTempcanvas" style="cursor:-webkit-grab;"></canvas>
+</div>
+<div id="rightPanel" class="rightPanel ut-card ut-card-2 draggable">
+<div id="myVideo">
+          <!-- =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+          <!-- MY PHONE NUMBER -->
+          <!-- =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+          <div class="col-sm-6">
+              <div id="my-number-section" style="display:none;" class="text-center">
+                  <div id="my-number">LOADING</div>
+                  <div id="my-number-title" class="hidden-sm hidden-xs">
+                      this is <strong>your phone number</strong>
+                  </div>
+                  <div id="my-number-permalink">
+                      <span class="glyphicon glyphicon-link"></span>
+                      call link:
+                      <a id="my-number-link" href="...">https://...</a>
+                  </div>
+              </div>
+          <!-- =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+          <!-- Video -->
+          <!-- =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+          <div class="col-sm-6">
+              <!-- DISPLAY -->
+              <div class="row">
+                  <div class="col-xs-12 text-center">
+                      <div id="video-border">
+                          <div class="pubnub-relative">
+                              <div id="video-self">...834y8uask</div>
+                          </div>
+                          <div id="video-display">
+                              <span class="glyphicon glyphicon-flash"></span>
+                          </div>
+                      </div>
+                      <div id="pubnub-relative">
+                          <div id="video-thumbnail"></div>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- DIAL CONTROLS -->
+              <div class="row" style="display:none;">
+                  <div class="col-sm-6 col-xs-7">
+                      <div class="form-group"><div class="input-group">
+                      <p style="display:none;" id="number"></p>
+                      </div></div>
+                  </div>
+                  <div class="col-sm-6 col-xs-5 dial-buttons" style="display:none;">
+                      <button style="width:50px;" id="dial" class="btn btn-primary">
+                          <span class="glyphicon glyphicon-earphone"></span>
+                      </button>
+                      <button style="width:50px;" id="snap" class="btn btn-success">
+                          <span class="glyphicon glyphicon-camera"></span>
+                      </button>
+                      <button style="width:50px;" id="hangup" class="btn btn-danger">
+                          <span class="glyphicon glyphicon-ban-circle"></span>
+                      </button>
+                  </div>
+              </div>
+          </div>
+<p id="mycolor" value="#4CAF50"></p>
+</div>
+<ul id="userList"></ul>
+<div id="chat">
+  <!--Incoming chat messages-->
+  <div id="chatPane"></div>
+
+  <!--Outgoing chat form-->
+  <div id="inputContainer"><input type="text" id="chatOut" value="hi"/></div>
+  <div id="submitContainer"><input type="submit" id="chatSend" style="background-image:url('icons/snd.png');background-repeat:no-repeat;"value="" align="middle"/></div>
+</div>
+</div>
+</div>
+ <div class="ut-card-2 ut-animate-opacity draggable" id="popups" style="padding-top:50px;padding-left:5px;padding-right:5px;z-index:4000;position:absolute;top:0px;left:0px;height:200px;width:200px;background-color:white;border:none;box-shadow: 0 4px 4px 0 rgba(0,0,0,0.16),0 0 0 1px rgba(0,0,0,0.08);">
+  <p style="font-size:15px;">Click 'Allow' to go <b><i>Full Screen</i></b></p>
+  <button class="ut-card" onclick="toggleFullScreen()"style="background-color:lightgreen;position:absolute;left:20px;border-radius:5px;height:15%;bottom:5px;width:25%;border:none;">Allow</button>
+  <button class="ut-card ut-red" onclick="document.querySelector('#popups').style.display = 'none';"style="background-color:lightgreen;position:absolute;right:20px;border-radius:5px;height:15%;bottom:5px;width:25%;border:none;">Cancel</button>
+</div>
+<div class="ut-card clr-box ut-card-2 draggable" id="clrbox" style="display:none;"  onclick="this.style.display='none';">
+ <select id="thickness" class="fixed" style="display:none;position:absolute;bottom:2%;width:95%;">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+</select>
+<button class="clr-btn" style="background-color: black;" onclick="color('#000000')"></button>
+<button class="clr-btn" style="background-color: white;" onclick="color('#ffffff')"></button>
+<button class="clr-btn" style="background-color: silver;" onclick="color('#c0c0c0')"></button>
+<button class="clr-btn" style="background-color: darkgray;" onclick="color('#a9a9a9')"></button>
+<button class="clr-btn" style="background-color: gray;" onclick="color('#808080')"></button>
+<button class="clr-btn" style="background-color: #757575;" onclick="color('#757575')"></button>
+<button class="clr-btn" style="background-color: magenta;" onclick="color('#ff00ff')"></button>
+<button class="clr-btn" style="background-color: red;" onclick="color('#ff0000')"></button>
+<button class="clr-btn" style="background-color: #ff5722;" onclick="color('#ff5722')"></button>
+<button class="clr-btn" style="background-color: orange;" onclick="color('#ffa500')"></button>
+<button class="clr-btn" style="background-color: gold;" onclick="color('#ffd700')"></button>
+<button class="clr-btn" style="background-color: yellow;" onclick="color('#ffff00')"></button>
+<button class="clr-btn" style="background-color: #8bc34a;" onclick="color('#8bc34a')"></button>
+<button class="clr-btn" style="background-color: lightgreen;" onclick="color('#90ee90')"></button>
+<button class="clr-btn" style="background-color: darkgreen;" onclick="color('#006400')"></button>
+<button class="clr-btn" style="background-color: teal;" onclick="color('#008080')"></button>
+<button class="clr-btn" style="background-color: blue;" onclick="color('#0000ff')"></button>
+<button class="clr-btn" style="background-color: indigo;" onclick="color('#4b0082')"></button>
+<button class="clr-btn" style="background-color: violet;" onclick="color('#ee82ee')"></button>
+<button class="clr-btn" style="background-color: purple;" onclick="color('#800080')"></button>
+<button class="clr-btn" style="background-color: lightyellow;" onclick="color('#ffffe0')"></button>
+<button class="clr-btn" style="background-color: #795548;" onclick="color('#795548')"></button>
+<button class="clr-btn" style="background-color: brown;" onclick="color('#a52a2a')"></button>
+<button class="clr-btn" style="background-color: pink;" onclick="color('#ffc0cb')"></button>
+<input type="color" id="myPenColor" value="#000000">
+<input type="color" id="myBoardColor" value="#ffffff">
+ </div>
+<div class="note_box ut-animate-opacity draggable" id="nt_box" style="display:none;">
+  <p id="note"></p>
+</div>
+<div class="ut-card ut-animate-bottom" id="pg_box" style="position:absolute;height:50px;width:50px;right:10%;background-color:whitesmoke;bottom:0px;">
+  <p id="pg_lbl" style="position:absolute;top:15px;left:21px;transition: font 0.3s ease;">1</p>
+</div><!--
+<iframe style="display:none;" id="embedded-human" frameBorder="0" width="1000" height="1000" allowFullScreen="true" src="https://human.biodigital.com/index.html?authentication_type=signin&authentication_provider=Google#">
+</iframe>-->
+<!--Load the Orbiter JavaScript library (non-minified version). Use during development.-->
+    <div class="calc draggable ut-card-2" style="display:none;" id="calc" ondblclick="this.style.display='none';">
+      <iframe style="height:330px;width:330px;overflow:none;" src="calc.html"></iframe>
+    </div>
+<script type="text/javascript" src="orbiter_boot.js"></script>
+<!--Load the Orbiter JavaScript library (minified version). Use for production.-->
+<!--<script type="text/javascript" src="http://cdn.unioncloud.io/Orbiter_latest_min.js"></script>-->
+
+<!--Load application code.-->
+<script src="http://localhost/interact.js"></script>
+    <script src="element.js"></script>
+<script type="text/javascript" src="ui.js"></script>
+<script type="text/javascript" src="orbiterboot.js"></script>
+<script type="text/javascript" src="unionchat.js"></script>
+<script type="text/javascript" src="userlist.js"></script>
+<script type="text/javascript" src="uniondraw1.js"></script>
+
+<script>
+var imageLoader = document.getElementById('imageLoader');
+imageLoader.addEventListener('change', handleImage, false);
+var canvas = document.getElementById('canvas1');
+var ctx = canvas.getContext('2d');
+
+function mouseX(evt) {
+    if (evt.pageX) {
+        return evt.pageX;
+    } else if (evt.clientX) {
+       return evt.clientX + (document.documentElement.scrollLeft ?
+           document.documentElement.scrollLeft :
+           document.body.scrollLeft);
+    } else {
+        return null;
+    }
+}
+
+function mouseY(evt) {
+    if (evt.pageY) {
+        return evt.pageY;
+    } else if (evt.clientY) {
+       return evt.clientY + (document.documentElement.scrollTop ?
+       document.documentElement.scrollTop :
+       document.body.scrollTop);
+    } else {
+        return null;
+    }
+}
+
+function handleImage(e){
+    var reader = new FileReader();
+    reader.onload = function(event){
+       // var img_cont = document.createElement('img');
+        var img = new Image();
+        img.onload = function(){
+           // img_cont.id = "img_cont";
+          //  document.body.appendChild(img_cont);
+            //img_cont.width = img.width;
+            //img_cont.height = img.height;
+           // img_cont.style.zIndex = "4212";
+            //img_cont.className = "draggable";
+            //img_cont.style.border = "dotted cornflowerblue";
+                ctx.drawImage(img,500,500);
+            //canvas.width = img.width;
+            //canvas.height = img.height;
+        }
+        img.src = event.target.result;
+        //img_cont.src = img.src;
+       // img.className = "draggable";
+    }
+    reader.readAsDataURL(e.target.files[0]);
+}
+function clearcanvas1()
+{   var id = "canvas" + document.getElementById('pg_lbl').innerHTML;
+    var canvas = document.getElementById(id),
+        ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+function removecntbx2() {
+document.getElementById("cntbx2").style.display = "none";
+}/*
+var video = document.querySelector("#videoElement");
+ function videochat() {
+navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+
+if (navigator.getUserMedia) {
+    navigator.getUserMedia({audio: true, video: true}, handleVideo, videoError);
+}
+
+function handleVideo(stream) {
+    video.src = window.URL.createObjectURL(stream);
+}
+
+function videoError(e) {
+    //alert("we're having touble connecting to your video devices");
+}
+s_a_b()
+ }*/
+function s_a_b(){
+ var sab =  document.getElementById('sab');
+ sab.style.display = "block";
+ //setTimeout(50000, s_a_b_rmv());
+ }
+ function s_a_b_rmv(){
+   sab.style.display = "none";
+ }
+ function toggleFullScreen() {
+  document.getElementById('popups').style.display = "none";
+  var doc = window.document;
+  var docEl = doc.documentElement;
+
+  var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+  var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+  if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+    requestFullScreen.call(docEl);
+  }
+  else {
+    cancelFullScreen.call(doc);
+  }
+}
+</script>
+<script type="text/javascript">
+$(document).ready(function() {
+
+
+    if ($("#test").addEventListener) {
+        $("#test").addEventListener('contextmenu', function(e) {
+            alert("You've tried to open context menu"); //here you draw your own menu
+            e.preventDefault();
+        }, false);
+    } else {
+
+        //document.getElementById("test").attachEvent('oncontextmenu', function() {
+        //$(".test").bind('contextmenu', function() {
+            $('body').on('contextmenu', 'a.test', function() {
+
+
+            //alert("contextmenu"+event);
+            document.getElementById("rmenu").className = "show";
+            document.getElementById("rmenu").style.top =  mouseY(event) + 'px';
+            document.getElementById("rmenu").style.left = mouseX(event) + 'px';
+
+            window.event.returnValue = false;
+
+
+        });
+    }
+
+});
+
+ //this is from another SO post...
+    $(document).bind("click", function(event) {
+        document.getElementById("rmenu").className = "hide";
+    });
+</script>
+<script>
+//1456
+function menu(){
+  var boardBody = document.getElementById('MyTempcanvas');
+  var pos = getPos(boardBody);
+  var mouseX = event.clientX - pos.x * '400' ;
+  var mouseY = event.clientY - pos.y * '500';
+  var rclk = document.getElementById('rclk');
+boardBody.addEventListener('contextmenu', function(e) {
+    //alert("You've tried to open context menu"); //here you draw your own menu
+    rclk.style.display = "block";
+    rclk.style.top = mouseY + "px";
+    rclk.style.left = mouseX + "px";
+    e.preventDefault();
+}, false);
+return false;
+}
+function getPos (obj) {
+  var curleft = curtop = 0;
+  if (obj.offsetParent) {
+    do {
+      curleft += obj.offsetLeft;
+      curtop += obj.offsetTop;
+    }
+    while (obj = obj.offsetParent);
+    return {x:curleft, y:curtop};
+  }
+}
+</script>
+    <script>
+        var css = "text-shadow: -1px -1px hsl(0,100%,50%); color: red; text-border:1px solid black; font-size: 40px;";
+        var csst = "font-size: 20px; color:grey;";
+        console.log("%c%s", css, 'Stop!','This window is only for developers if someone told you to enable a feature from here then thats a scam just dont try doing that that will make your account and ip address banned form our servers for ever and you will not be able to make a account again and also will not be able to study. So think about your future.');
+    </script>
+    <!-- =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- -->
+    <!-- WebRTC Peer Connections -->
+    <!-- =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- -->
+    <!-- IMPORTANT: THIS IS AN UNMINIFIED DEVELOPMENT PUBNUB LIBRARY
+        replace this with the latest versioned, minified CDN lib link before
+        you deploy your app to a production enviornment.
+        https://github.com/pubnub/javascript#cdn-links
+    -->
+    <script src="js/pubnub.js"></script>
+
+    <!-- WebRTC SDK -->
+    <script src="js/webrtc-v2.js"></script>
+    <script src="js/sound.js"></script>
+    <script>(function(){
+
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    // Generate Random Number if Needed
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    var urlargs         = urlparams();
+    var my_number       = PUBNUB.$('my-number');
+    var my_link         = PUBNUB.$('my-number-link');
+    var number          = urlargs.number || Math.floor(Math.random()*999+1);
+
+    my_number.number    = number;
+    my_number.innerHTML = ''+my_number.number;
+    my_link.href        = location.href.split('?')[0] + '?call=' + number;
+    my_link.innerHTML   = my_link.href;
+
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    // Update Location if Not Set
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    if (!('number' in urlargs)) {
+        urlargs.number = my_number.number;
+        location.href = urlstring(urlargs);
+        return;
+    }
+
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    // Get URL Params
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    function urlparams() {
+        var params = {};
+        if (location.href.indexOf('?') < 0) return params;
+
+        PUBNUB.each(
+            location.href.split('?')[1].split('&'),
+            function(data) { var d = data.split('='); params[d[0]] = d[1]; }
+        );
+
+        return params;
+    }
+
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    // Construct URL Param String
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    function urlstring(params) {
+        return location.href.split('?')[0] + '?' + PUBNUB.map(
+            params, function( key, val) { return key + '=' + val }
+        ).join('&');
+    }
+
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    // Calling & Answering Service
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    var video_out = PUBNUB.$('video-display');
+    var img_out   = PUBNUB.$('video-thumbnail');
+    var img_self  = PUBNUB.$('video-self');
+
+    var phone     = window.phone = PHONE({
+        number        : my_number.number, // listen on this line
+        publish_key   : 'pub-c-561a7378-fa06-4c50-a331-5c0056d0163c',
+        subscribe_key : 'sub-c-17b7db8a-3915-11e4-9868-02ee2ddab7fe',
+        ssl           : true
+    });
+
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    // Video Session Connected
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    function connected(session) {
+        video_out.innerHTML = '';
+        video_out.appendChild(session.video);
+
+        PUBNUB.$('number').value = ''+session.number;
+        sounds.play('sound/hi');
+        console.log("Hi!");
+    }
+
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    // Video Session Ended
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    function ended(session) {
+        clearInterval(thumbnail.ival);
+        thumbnail.ival = 0;
+        set_icon('facetime-video');
+        img_out.innerHTML = '';
+        sounds.play('sound/goodbye');
+        console.log("Bye!");
+    }
+
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    // Video Session Ended
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    function set_icon(icon) {
+        video_out.innerHTML = '<span class="glyphicon glyphicon-' +
+            icon + '"></span>';
+    }
+
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    // Start Phone Call
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    function dial(number) {
+        // Dial Number
+        var session = phone.dial(number);
+
+        // No Dupelicate Dialing Allowed
+        if (!session) return;
+
+        // Show Connecting Status
+        set_icon('send');
+    }
+
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    // Ready to Send or Receive Calls
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    phone.ready(function(){
+        // Ready To Call
+        set_icon('facetime-video');
+
+        // Auto Call
+        if ('call' in urlargs) {
+            var number = urlargs['call'];
+            PUBNUB.$('number').innerHTML = number;
+            dial(number);
+        }
+
+        // Make a Phone Call
+        PUBNUB.bind( 'mousedown,touchstart', PUBNUB.$('dial'), function(){
+            var number = PUBNUB.$('number').value;
+            if (!number) return;
+            dial(number);
+        } );
+
+        // Hanup Call
+        PUBNUB.bind( 'mousedown,touchstart', PUBNUB.$('hangup'), function() {
+            phone.hangup();
+            set_icon('facetime-video');
+        } );
+
+        // Take Picture
+        PUBNUB.bind( 'mousedown,touchstart', PUBNUB.$('snap'), function() {
+            var photo = phone.snap();
+            img_self.innerHTML = ' ';
+            img_self.appendChild(photo.image);
+            setTimeout( function() { img_self.innerHTML = ' ' }, 750 );
+        } );
+    });
+
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    // Received Call Thumbnail
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    function thumbnail(session) {
+        img_out.innerHTML = '';
+        img_out.appendChild(session.image);
+        img_out.appendChild(phone.snap().image);
+    }
+
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    // Receiver for Calls
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    phone.receive(function(session){
+        session.message(message);
+        session.thumbnail(thumbnail);
+        session.connected(connected);
+        session.ended(ended);
+
+        if (!thumbnail.ival)
+            thumbnail.ival = setInterval( () => thumbnail(session), 100 );
+    });
+
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    // Chat
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    var chat_in  = PUBNUB.$('pubnub-chat-input');
+    var chat_out = PUBNUB.$('pubnub-chat-output');
+
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    // Send Chat MSG and update UI for Sending Messages
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    PUBNUB.bind( 'keydown', chat_in, function(e) {
+        if ((e.keyCode || e.charCode) !== 13)     return true;
+        if (!chat_in.value.replace( /\s+/g, '' )) return true;
+
+        phone.send({ text : chat_in.value });
+        add_chat( my_number.number + " (Me)", chat_in.value );
+        chat_in.value = '';
+    } )
+
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    // Update Local GUI
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    function add_chat( number, text ) {
+        if (!text.replace( /\s+/g, '' )) return true;
+
+        var newchat       = document.createElement('div');
+        newchat.innerHTML = PUBNUB.supplant(
+            '<strong>{number}: </strong> {message}', {
+            message : safetxt(text),
+            number  : safetxt(number)
+        } );
+        chat_out.insertBefore( newchat, chat_out.firstChild );
+    }
+
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    // WebRTC Message Callback
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    function message( session, message ) {
+        add_chat( session.number, message.text );
+    }
+
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    // XSS Prevent
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    function safetxt(text) {
+        return (''+text).replace( /[<>]/g, '' );
+    }
+
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    // Problem Occured During Init
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    phone.unable(function(details){
+        console.log("Alert! - Reload Page.");
+        console.log(details);
+        set_icon('remove');
+    });
+
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    // Debug Output
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    phone.debug(function(details){
+         // console.log(details);
+    });
+
+    })();</script>
+</body>
+</html>

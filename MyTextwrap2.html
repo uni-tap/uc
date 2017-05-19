@@ -1,0 +1,86 @@
+
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
+    </style>
+  </head>
+  <body>
+<canvas id="canvas" height="200" width="200"></canvas>
+<input type="text" id="sentence" value="" placeholder="your text here" />
+<script>
+var canvas = document.getElementById('canvas'),
+    ctx = canvas.getContext('2d');
+   // var textval =String.fromCharCode(event.keyCode || event.charCode);
+   document.onkeydown= draw;
+var mytext = document.getElementById('sentence') // .style.visibility='hidden';//onkeyup = draw;//style.visibility='hidden';
+    mytext.onkeyup = draw;
+    //mytext.focus();
+  var x = document.createElement("TEXTAREA");  
+  x.id="MyTextArea";
+ x.value= "mypapa";
+ var y = document.createElement("INPUT");
+     y.Id = "MyTextBox"; 
+     x.value="dig";
+    var z = document.getElementById("MyTextBox");
+    alert(z);
+    document.getElementById("MyTextArea").value = "Fifth Avenue, New York City";
+    document.body.appendChild(x);
+   // y.appendChild(t);
+    document.body.appendChild(y); 
+ctx.textAlign = "center"; // required for centered text in demo
+//var textval = String.fromCharCode(e.keyCode || e.charCode) ;
+ 
+function draw(e) {
+  // var textval = String.fromCharCode(e.keyCode || e.charCode) ;
+   var textval = mytext.value;
+   // alert(textval);
+    var lines = fragmentText(textval , canvas.width * 0.9),
+        font_size = 12; // px
+    ctx.font = "Normal " + font_size + "px Arial";
+    ctx.save();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    lines.forEach(function(line, i) {
+        ctx.fillText(line,canvas.width/2 , (i + 1) * font_size);
+    });
+    ctx.restore();
+}
+
+function fragmentText(text, maxWidth) {
+   // alert(text.keycode);
+    var words = text.split(' '),
+        lines = [],
+        line = "";
+    if (ctx.measureText(text).width < maxWidth) {
+        return [text];
+    }
+    while (words.length > 0) {
+        while (ctx.measureText(words[0]).width >= maxWidth) {
+            var tmp = words[0];
+            words[0] = tmp.slice(0, -1);
+            if (words.length > 1) {
+                words[1] = tmp.slice(-1) + words[1];
+            } else {
+                words.push(tmp.slice(-1));
+            }
+        }
+        if (ctx.measureText(line + words[0]).width < maxWidth) {
+            line += words.shift() + " ";
+        } else {
+            lines.push(line);
+            line = "";
+        }
+        if (words.length === 0) {
+            lines.push(line);
+        }
+    }
+    return lines;
+}
+
+ </script>
+  </body>
+</html>   

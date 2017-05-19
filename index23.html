@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+
+  <html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Union HTML5 Collaborator</title>
+
+<!--Prevents iPhone, iPad, and touch devices from zooming-->
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+<link href="http://uni-tap.com/fhcss.css" rel="stylesheet">
+<!--
+Load Canvas support for IE8. ExplorerCanvas courtesy Google. 
+See: http://code.google.com/p/explorercanvas/
+-->
+<!--[if lt IE 9]>
+<script src="excanvas.js"></script>
+<![endif]-->
+
+<!--CSS-->
+<link href="style.css" rel="stylesheet" type="text/css">
+<style>
+.side{
+height:20%;
+width:100%;
+margin-top:5px;
+}
+ right{
+     position: absolute;
+     right:0px;
+     }
+select{
+  padding:10px;
+  background-color:whitesmoke;
+  border:none;
+}
+#CanvasContainer{
+  width:85%;
+  height:95%;
+  border:none;
+  position:absolute;
+  left:50px;
+  top:70px;
+}
+.wrttools{
+  width:15%;
+  height:20%;
+  z-index:1;
+  position:absolute;
+  top:240px;
+  left:55px;
+  background-color:whitesmoke;
+  display:none;
+}
+.toolsbtn{
+  position:relative;
+  border:none;
+  height:100%;
+  width:10%;
+  top:0px;
+}
+      </style>
+      <style>
+          .type-c{
+              width:30%;
+              height:25%;
+              border-radius:20px;
+              position:absolute;
+              top:30%;
+              left:30%;
+              z-index:2;
+              border:none;
+              display:none;
+          }
+          .inner{
+              position:absolute;
+              right:5%;
+              top:-25%;
+              height:150%;
+              width:50%;
+              background-color:white;
+              border-radius:10px;
+              border:none;
+          }
+          .clr-box{
+              width:12%;
+              height:25%;
+              background-color:whitesmoke;
+              position:absolute;
+              top:25px;
+              right:25px;
+              z-index:2;
+              border:none;
+              padding:10px;
+          }
+          .clr-btn{
+              border-radius:100px;
+              height:14%;
+              width:15%;
+              border:none;
+          }
+          .clr-btn:hover{
+              border:2px solid gray;
+          }
+          .ctrlbtn{
+              height:100%;
+              width:8.5%;
+              border:none;
+              background-color:transparent;
+              text-align:center;
+          }
+          .ctrlbtn:hover{
+              background-color:silver;
+          }
+          .ctrlbtn:focus{
+            background-color:silver;
+          }
+          .ctrlbtn:active{
+            background-color:silver;
+          }
+          .sab{
+            height:100px;
+            width:500px;
+            background-color:whitesmoke;
+            z-index:4012;
+            position:absolute;
+            top:45%;
+            left:35%;
+            border:none;
+
+          }
+      </style>
+</head>
+
+<body onload="videochat()"> 
+  <div style="display:none;" onclick="sab.style.display = 'none';" class="ut-card ut-card-2 sab ut-animate-opacity" id="sab">
+     <img src="icons/brush.png" style="position:absolute;left:20px;top:20px;width:10%;height:50%;">
+     <h3 style="position:absolute;left:25%;top:20px;" ><i>Draw anything in the white area.</i></h3>
+   </div>
+<img id="MyPage" src="" style="display:none;">
+ <!--<body onload="videochat()">-->
+<!--Contains the system status-->
+<div id="statusField"></div>
+<div id="dtText">
+
+<right><time id="time"></time></right>
+</div>
+
+<!--<div id="downloadLink"><a href="UnionCollaborator.zip">Download source...</a></div></div>
+<span id="dtText"></span>-->
+
+   <div id="controls"><div style="display:none;">
+      Size:
+      <select id="thickness" class="fixed">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+        <option value="50">50</option>
+      </select>
+  
+      Color:
+      <select id="color">
+        <option value="#FFFFFF">#FFFFFF</option>
+        <option value="#AAAAAA">#AAAAAA</option>
+        <option value="#999999">#999999</option>
+        <option value="#000000">#000000</option>
+        <option value="#9BA16C">#9BA16C</option>
+        <option value="#CC8F2B">#CC8F2B</option>
+        <option value="#63631D">#63631D</option>
+        <option value="#00FF00">#00FF00</option>
+      </select>
+       <select id="tool">
+	   <option value="pen">Pen</option>
+	   <option value="newpage">NewPage</option>
+	   <option value="line">Line</option>
+	   <option value="rect">Rectangle</option>            
+       <option value="circ">Circle</option>
+		<option value="triangle">Triangle</option>
+		<option value="righttriangle">RightTriangle</option>
+		<option value="ellipse">Ellipse</option>
+		<option value="frect">FilledRectangle</option>
+		<option value="fcirc">FilledCircle</option>
+		<option value="ftriangle">FilledTriangle</option>
+		<option value="frighttriangle">FilledRightTriangle</option>
+		<option value="fellipse">FilledEllipse</option>
+      </select>
+  </div>
+<button class="ctrlbtn" id="Pen"  style="position:absolute;top:0px;right:435px;background-image:url('icons/pnl.png');background-repeat:no-repeat;cursor:url('icons/pnl.png')"></button>
+<button class="ctrlbtn" id="Eraser" style="position:absolute;top:0px;right:380px;background-image:url('icons/esr.png');background-repeat:no-repeat;" ></button>
+<button class="ctrlbtn" id="Text" style="position:absolute;top:0px;right:10px;background-repeat:no-repeat;background-image:url('icons/txt.png');"></button>
+<button class="ctrlbtn" id="Line" style="position:absolute;top:0px;right:330px;background-repeat:no-repeat;background-image:url('icons/line.png');"></button>
+<button class="ctrlbtn" id="Rectangle" style="position:absolute;top:0px;right:70px;background-image:url('icons/sqr.png');background-repeat:no-repeat;"></button>
+<button class="ctrlbtn" id="Circle"    style="position:absolute;top:0px;right:120px;background-image:url('icons/circ.png');background-repeat:no-repeat;"></button>
+<button class="ctrlbtn" id="Ellipse"   style="position:absolute;top:0px;right:180px;background-image:url('FGreenEllipseIcon.png');background-repeat:no-repeat;"></button>
+<button class="ctrlbtn" id="RightTriangle" style="position:absolute;top:0px;right:230px;background-image:url('icons/right-tri.png');background-repeat:no-repeat;"></button>
+<button class="ctrlbtn" id="Triangle"  style="position:absolute;top:0px;right:280px;background-image:url('icons/tri.png');background-repeat:no-repeat;"></button>
+    </div>
+    
+<div id="controls1" class="ut-animate-left ut-card-2">
+ <button class="side" style="border:none;box-shadow:none;" id="NewPage">+</button>
+<button class="side" style="border:none;box-shadow:none;" id="Leftbt">‹</button>
+<p type="text" id="textbox" name="PageNo" size="2" onchange="myButtonClicked ('TextBoxValue')"></p>
+<button class="side" style="border:none;box-shadow:none;" id="Rightbt">›</button>
+<button class="side" style="border:none;box-shadow:none;background-image:url('icons/graph.png');background-repeat:no-repeat;" id="Graph"></button>
+ </div>
+   
+  
+  <div id="CanvasContainer"style.display = "none" >
+    
+   </div>
+ <div id="MyBoard" >  
+       <!--The canvas where drawings will be displayed-->
+        <canvas id="canvas1"class="Mycanvas" ></canvas>
+        <canvas id="MyTempcanvas"class="MyTempcanvas" ></canvas>
+</div>  
+<div id="rightPanel" class="rightPanel ut-card ut-card-2 ut-animate-right">
+<div id="myVideo">
+<video autoplay="true" id="videoElement" style="width:94%;height:14.9%;background-color:black;position:absolute;top:0px;right:5px;"></video>
+<p id="mycolor" value="#4CAF50"></p>
+</div>
+<ul id="userList"><li class="userlistItem" id="50477">50477</li><li class="userlistItem" id="50481">50481</li><li class="userlistItem" id="50483">50483</li></ul>
+<div id="chat">
+<div id="chatPane"><div class="chatMessage diagonalGradient">Joining chat...</div><div class="chatMessage diagonalGradient">Chat ready.</div><div class="chatMessage diagonalGradient">Guest50480 left.</div><div class="chatMessage diagonalGradient">Guest50482 joined.</div><div class="chatMessage diagonalGradient">Guest50482 left.</div><div class="chatMessage diagonalGradient">Guest50483 joined.</div></div>
+<div id="inputContainer"><input type="text" id="chatOut"></div>
+<div id="submitContainer"><input type="submit" id="chatSend" class="ut-btn ut-green" value="Send"></div>
+</div>
+</div>
+
+
+    
+    <!-- <div id="canvasContainer">
+     The canvas where drawings will be displayed
+      <canvas id="Mycanvas"></canvas>
+    </div>-->
+	
+ <div class="ut-card ut-blue ut-animate-opacity" id="popups" style="z-index:4000;position:absolute;top:0px;left:35%;height:50px;width:500px;padding:5px;background-color:white;border:none;box-shadow: 0 4px 4px 0 rgba(0,0,0,0.16),0 0 0 1px rgba(0,0,0,0.08);">
+  <p class="ut-text-white" style="font-size:25px;">Click 'Allow' to go <b><i>Full Screen</i></b></p>
+  <button class="ut-card" onclick="toggleFullScreen()"style="background-color:lightgreen;position:absolute;right:20px;border-radius:5px;height:75%;top:5px;width:20%;border:none;">Allow</button>
+</div>
+<div class="ut-card clr-box ut-card-2" id="clrbox" style="display:none;">
+ <select id="thickness" class="fixed" style="display:none;position:absolute;bottom:2%;width:95%;">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+</select>
+<button class="clr-btn" style="background-color: black;" onclick="color('#000000')"></button>
+<button class="clr-btn" style="background-color: white;" onclick="color('#ffffff')"></button>
+<button class="clr-btn" style="background-color: silver;" onclick="color('#c0c0c0')"></button>
+<button class="clr-btn" style="background-color: darkgray;" onclick="color('#a9a9a9')"></button>
+<button class="clr-btn" style="background-color: gray;" onclick="color('#808080')"></button>
+<button class="clr-btn" style="background-color: #757575;" onclick="color('#757575')"></button>
+<button class="clr-btn" style="background-color: magenta;" onclick="color('#ff00ff')"></button>
+<button class="clr-btn" style="background-color: red;" onclick="color('#ff0000')"></button>
+<button class="clr-btn" style="background-color: #ff5722;" onclick="color('#ff5722')"></button>
+<button class="clr-btn" style="background-color: orange;" onclick="color('#ffa500')"></button>
+<button class="clr-btn" style="background-color: gold;" onclick="color('#ffd700')"></button>
+<button class="clr-btn" style="background-color: yellow;" onclick="color('#ffff00')"></button>
+<button class="clr-btn" style="background-color: #8bc34a;" onclick="color('#8bc34a')"></button>
+<button class="clr-btn" style="background-color: lightgreen;" onclick="color('#90ee90')"></button>
+<button class="clr-btn" style="background-color: darkgreen;" onclick="color('#006400')"></button>
+<button class="clr-btn" style="background-color: teal;" onclick="color('#008080')"></button>
+<button class="clr-btn" style="background-color: blue;" onclick="color('#0000ff')"></button>
+<button class="clr-btn" style="background-color: indigo;" onclick="color('#4b0082')"></button>
+<button class="clr-btn" style="background-color: violet;" onclick="color('#ee82ee')"></button>
+<button class="clr-btn" style="background-color: purple;" onclick="color('#800080')"></button>
+<button class="clr-btn" style="background-color: lightyellow;" onclick="color('#ffffe0')"></button>
+<button class="clr-btn" style="background-color: #795548;" onclick="color('#795548')"></button>
+<button class="clr-btn" style="background-color: brown;" onclick="color('#a52a2a')"></button>
+<button class="clr-btn" style="background-color: pink;" onclick="color('#ffc0cb')"></button>
+<input type="color" id="myPenColor" value="#000000">
+<input type="color" id="myBoardColor" value="#ffffff">
+
+<p id="val" value="">hi</p>
+ </div>
+<!--Load the Orbiter JavaScript library (non-minified version). Use during development.-->
+<script type="text/javascript" src="orbiter_boot.js"></script>
+<!--Load the Orbiter JavaScript library (minified version). Use for production.-->
+<!--<script type="text/javascript" src="http://cdn.unioncloud.io/Orbiter_latest_min.js"></script>-->
+
+<!--Load application code.-->
+<script type="text/javascript" src="ui.js"></script>
+<script type="text/javascript" src="orbiterboot.js"></script>
+<script type="text/javascript" src="unionchat.js"></script>
+<script type="text/javascript" src="userlist.js"></script>
+<script type="text/javascript" src="uniondraw1.js"></script>
+<script>
+function removecntbx2() {
+document.getElementById("cntbx2").style.display = "none";
+}
+var video = document.querySelector("#videoElement");
+ function videochat() {
+navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+
+if (navigator.getUserMedia) {
+    navigator.getUserMedia({audio: true, video: true}, handleVideo, videoError);
+}
+
+function handleVideo(stream) {
+    video.src = window.URL.createObjectURL(stream);
+}
+
+function videoError(e) {
+    alert("we're having touble connecting to your video devices");
+}
+s_a_b()
+ }
+function s_a_b(){
+ var sab =  document.getElementById('sab');
+ sab.style.display = "block";
+ //setTimeout(50000, s_a_b_rmv());
+ }
+ function s_a_b_rmv(){
+   sab.style.display = "none";
+ }
+ function toggleFullScreen() {
+  document.getElementById('popups').style.display = "none";
+  var doc = window.document;
+  var docEl = doc.documentElement;
+
+  var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+  var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+  if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+    requestFullScreen.call(docEl);
+  }
+  else {
+    cancelFullScreen.call(doc);
+  }
+}
+</script>
+<script type="text/javascript">
+$(document).ready(function() {
+
+
+    if ($("#test").addEventListener) {
+        $("#test").addEventListener('contextmenu', function(e) {
+            alert("You've tried to open context menu"); //here you draw your own menu
+            e.preventDefault();
+        }, false);
+    } else {
+
+        //document.getElementById("test").attachEvent('oncontextmenu', function() {
+        //$(".test").bind('contextmenu', function() {
+            $('body').on('contextmenu', 'a.test', function() {
+
+
+            //alert("contextmenu"+event);
+            document.getElementById("rmenu").className = "show";
+            document.getElementById("rmenu").style.top =  mouseY(event) + 'px';
+            document.getElementById("rmenu").style.left = mouseX(event) + 'px';
+
+            window.event.returnValue = false;
+
+
+        });
+    }
+
+});
+
+// this is from another SO post...
+    $(document).bind("click", function(event) {
+        document.getElementById("rmenu").className = "hide";
+    });
+
+
+
+function mouseX(evt) {
+    if (evt.pageX) {
+        return evt.pageX;
+    } else if (evt.clientX) {
+       return evt.clientX + (document.documentElement.scrollLeft ?
+           document.documentElement.scrollLeft :
+           document.body.scrollLeft);
+    } else {
+        return null;
+    }
+}
+
+function mouseY(evt) {
+    if (evt.pageY) {
+        return evt.pageY;
+    } else if (evt.clientY) {
+       return evt.clientY + (document.documentElement.scrollTop ?
+       document.documentElement.scrollTop :
+       document.body.scrollTop);
+    } else {
+        return null;
+    }
+}
+</script>
+</body>
+</html>

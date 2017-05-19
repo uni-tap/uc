@@ -1,0 +1,41 @@
+<html>
+<head>
+<link href="fhcss.css" rel="stylesheet">
+<style>
+</style>
+</head>
+<body style="background-color:whitesmoke;">
+    <div id="lg-box" class="fh-card" style="position:absolute;top:25%;left:40%;height:30%;width:20%;border:none;">
+        <img src="../../mylogo.jpg" style="height:100%;width:100%;">
+    </div>
+    <center>
+    <h4 id="welcome-txt" style="color:black;position:absolute;top:50%;left:35%;">Welcome to <b>uni-<img style="height:25px;" src="../../icon.png"></b>,<br /> A place where you can teach or learn whatever you want</h4>
+    </center>
+    <button id="btn_next" class="fh-btn fh-yellow fh-card-2" onclick="next()" style="border-radius:100%;position:absolute;top:44%;right:2%;height:6%;width:3%;text-align:center;" >></button>
+    <iframe src="../../setuppage.html" class="fh-card" style="width:95%;height:100%;display:none;border:none;position:absolute;top:0px;left:0px;" id="iframe"></iframe>
+<script>
+    var body = document.body;
+    var body2 = document.getElementsByTagName('body2');
+    var lg_box = document.getElementById('lg-box');
+    var welcome_txt = document.getElementById('welcome-txt');
+    var iframe = document.getElementById('iframe');
+    var btn_next = document.getElementById('btn_next'); 
+    function next() {
+        //body.style.display= "none";
+        lg_box.style.display = "none";
+        welcome_txt.style.display = "none";
+        iframe.style.display = "block";
+        btn_next.onclick = function () {   
+        if(iframe.style.display = "block"){
+            iframe.style.display = "none";
+            welcome_txt.style.display = "block";
+            welcome_txt.innerHTML = "You're ready to go.<br />Click <b>next</b> to continue.";
+             btn_next.onclick = function () {
+                 window.location.replace('index.php');
+             }
+    }
+        }
+             }
+</script>
+</body>
+</html>

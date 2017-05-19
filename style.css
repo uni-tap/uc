@@ -1,0 +1,229 @@
+body, html {
+  height: 100%;
+  width: 100%;
+  background-color: white;
+  overflow:hidden;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+    z-index:0;
+}
+
+#header {
+  margin-top: 10px;
+  margin-left: 10px;
+  color: #333333;
+  text-align:center;
+}
+
+#dtText {
+  top: 0;
+  padding-top: 2px;
+  position:absolute;
+  width: 100%;
+  height: 20px;
+  font-weight: bold;
+  padding:2px;
+  right:20px;
+  left:0px;
+}
+
+#downloadLink {
+  position: absolute;
+  font-weight: bold;
+  right: 10px;
+}
+
+#main {
+  margin-top: 22px;
+}
+
+#leftPanel {
+  position: absolute;
+  background-color: #FFFFFF;
+  border:none;
+  width: 200px;
+  overflow: auto;
+  padding: 5px;
+  bottom: 0px;
+  right:0px;
+  height:650px;
+}
+
+.rightPanel {
+  position: fixed;
+  overflow:none;
+  padding: 5px;
+  bottom:0px;
+  width:10%;
+  height:90%;
+  right:0px;
+  z-index:1;
+  background-color:white;
+}
+
+#chatPane {
+  font-size: 16px;
+  background-color: #EAEAEA;
+  border:none;
+  height: 42%;
+  width:94%;
+  overflow: auto;
+  padding: 2px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  position:absolute;
+  bottom:40px;
+}
+
+.chatMessage {
+  left: 0;
+  right: 0;
+  padding: 4px;
+  background-color:#FCFCFC;
+  margin-bottom: 4px;
+  border-radius:5px;
+  width:100%;
+}
+
+#inputContainer {
+  position:absolute;
+  bottom:10px;
+  padding-right: 7px;
+  width:80%;
+}
+
+#chatOut {
+  padding: 2px;
+  width: 100%;
+}
+
+#submitContainer {
+    position:absolute;
+  bottom:5px;
+  right:5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: right;
+  height:5%;
+  width:20%;
+}
+
+#chatSend {
+  border-radius:100px;
+  height:100%;
+  width:100%;
+  border:none;
+}
+
+#userList {
+  border:none;
+  position:absolute;
+  top:26%;
+  background-color: #EAEAEA;
+  height: 25%;
+  width:94%;
+  padding: 5px;
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+.userlistItem {
+  margin-top: -1px;
+  background-color: #EFEFEF;
+  padding-top: 3px;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+
+#statusField {
+  position:absolute;
+  top: 42px;
+  right: 20px;
+  font-size: 14px;
+}
+
+.diagonalGradient {
+  background: rgb(255,255,255); /* Old browsers */
+  background: -moz-linear-gradient(-45deg,  rgba(255,255,255,1) 0%, rgba(237,237,237,1) 66%, rgba(243,243,243,1) 66%, rgba(255,255,255,1) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(66%,rgba(237,237,237,1)), color-stop(66%,rgba(243,243,243,1)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(-45deg,  rgba(255,255,255,1) 0%,rgba(237,237,237,1) 66%,rgba(243,243,243,1) 66%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(-45deg,  rgba(255,255,255,1) 0%,rgba(237,237,237,1) 66%,rgba(243,243,243,1) 66%,rgba(255,255,255,1) 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(-45deg,  rgba(255,255,255,1) 0%,rgba(237,237,237,1) 66%,rgba(243,243,243,1) 66%,rgba(255,255,255,1) 100%); /* IE10+ */
+  background: linear-gradient(135deg,  rgba(255,255,255,1) 0%,rgba(237,237,237,1) 66%,rgba(243,243,243,1) 66%,rgba(255,255,255,1) 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+.Mycanvas{
+position:absolute;
+   top:0px;
+  left:0px;
+   bottom:5px;
+  overflow:hidden;
+ background-color:white;
+ border:none;
+}
+.MyTempcanvas{
+position:absolute;
+   top:0px;
+  left:0px;
+    overflow:hidden;
+border:none;
+}
+
+/*#canvasContainer {
+  position: absolute;
+  top: 35px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  overflow: hidden;
+}
+
+#canvas {
+  background-color: #555555;
+}*/
+
+#controls {
+    padding-left:5px;
+  background-color: whitesmoke;
+  position: fixed;
+  height: 7.6%;
+  top:0px;
+  right: 0px;
+  z-index:2;
+  border:none;
+  width:30%;
+    overflow: hidden;
+}
+
+#controls1 {
+    background-color: whitesmoke;
+    position: fixed;
+    padding-top: 3px;
+    padding-left: 1px;
+    height: 45%;
+    width: 5%;
+    left: 0px;
+    top: 30%;
+	overflow:hidden;
+    z-index:1;
+}
+#controls1.button {
+  margin-bottom:5px;
+}
+select {
+  font-family: monospace;
+  font-size: medium;
+}
+
+a:link, a:visited {
+  color: #000000;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #FFFFFF;
+}
