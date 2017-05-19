@@ -35,7 +35,7 @@ var appRoomID;
     status("Connecting to Uni-tap...");
     
     // Connect to Union Server
-    orbiter.connect("tryunion.com", 80);
+    orbiter.connect("https://tryunion.com", 80);
   }
 
 
